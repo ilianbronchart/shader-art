@@ -8,6 +8,14 @@ Feel free to install and try stuff out for yourself!
 ### Terms:
 
 - [Signed Distance Functions](https://iquilezles.org/articles/distfunctions2d/)
+- Ray Marching
+
+#### Noise Functions:
+
+- Perlin Noise
+- Voronoi Noise
+- Fractional Brownian Motion (FBM)
+- Domain Warping
 
 ### Resources:
 

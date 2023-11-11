@@ -6,7 +6,7 @@ uniform vec2 u_resolution;
 uniform float u_time;
 
 const float speed = 1.0;
-const float period = 8.0;
+const float period = 20.0;
 
 vec3 palette(float t) {
     vec3 a = vec3(0.5, 0.5, 0.5);

@@ -107,7 +107,7 @@ vec3 squigglyDiving(vec2 uv, float scale) {
 void main() {
     vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution) / u_resolution.y;
 
-    vec3 squiggleDivingCircles = squigglyDiving(uv, 1.0);
+    vec3 squiggleDivingCircles = squigglyDiving(uv, 0.7);
 
     gl_FragColor = vec4(squiggleDivingCircles, 1.0);
 }

@@ -84,6 +84,8 @@ vec3 palette(float t) {
 void main() {
     vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution) / u_resolution.y;
 
+    uv *= 2.0;
+
     float sampleY = 0.0;
     sampleY += u_time * speed;
 

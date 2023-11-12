@@ -76,14 +76,15 @@ vec3 palette(float t) {
 
 vec3 squigglyDiving(vec2 uv, float scale) {
     uv /= scale;
+    float seed = u_time * 0.3;
 
     vec3 finalColor = vec3(0);
-    float divingThickness = 0.003;
-    float squigglyRadius = 0.6;
-    float ringRadius = 0.010;
+    float divingThickness = 0.004;
     float divingRadius = 0.3;
+    float squigglyRadius = 0.6;
+    float squigglyThickness = 0.010;
 
-    float circle = squigglyCircle(uv, squigglyRadius, ringRadius, 0.1, u_time);
+    float circleInner = squigglyCircle(uv, squigglyRadius, squigglyThickness, seed, u_time);
 
     for(float i = 0.0; i < 40.0; i += 1.0) {
         vec2 p = uv;
@@ -91,14 +92,14 @@ vec3 squigglyDiving(vec2 uv, float scale) {
 
         float radius = divingRadius + cos(2.0 * (u_time + PI) + i * 0.1) * 0.3 + 0.3;
 
-        float divingCircle = squigglyCircle(p, radius, divingThickness, 1.0, u_time);
+        float divingCircle = squigglyCircle(p, radius, divingThickness, seed, u_time);
 
         vec3 color = palette(i / 50.0 + u_time);
 
         finalColor = max(finalColor, color * divingCircle);
     }
 
-    finalColor = max(finalColor, vec3(circle));
+    finalColor = max(finalColor, vec3(circleInner));
 
     return finalColor;
 }

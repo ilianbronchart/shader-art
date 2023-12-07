@@ -52,7 +52,7 @@ float cnoise(vec2 P) {
 float squigglyCircle(vec2 p, float radius, float thickness, float seed, float time) {
     vec2 norm = normalize(p);
 
-    float sample = cnoise(norm * 2.0 + time + seed);
+    float sample = cnoise(norm * 2.5 + time + seed);
     sample *= 1.0 + radius;
 
     p.y *= 3.0;
@@ -79,7 +79,7 @@ vec3 squigglyDiving(vec2 uv, float scale) {
     float seed = u_time * 0.3;
 
     vec3 finalColor = vec3(0);
-    float divingThickness = 0.004;
+    float divingThickness = 0.01;
     float divingRadius = 0.3;
     float squigglyRadius = 0.6;
     float squigglyThickness = 0.010;

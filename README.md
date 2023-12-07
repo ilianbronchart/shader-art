@@ -20,6 +20,7 @@ Feel free to install and try stuff out for yourself!
 ### Resources:
 
 - [GraphToy](https://graphtoy.com/): Visualize GLSL functions
+- [Inigo Quilez Articles](https://iquilezles.org/articles/): Treasure trove of shader and rendering information
 
 ### Functions used to date:
 

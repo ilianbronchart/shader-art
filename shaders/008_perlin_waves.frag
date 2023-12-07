@@ -4,7 +4,6 @@ precision mediump float;
 
 uniform vec2 u_resolution;
 uniform float u_time;
-uniform vec2 u_mouse;
 
 const float temperature = 5.0;
 const float noiseScale = 0.2;
@@ -56,20 +55,9 @@ float cnoise(vec2 P) {
 
 float perline(vec2 p, float noiseY, float lineThickness, float noiseScale) {
     float x = p.x / 2.0;
-
-    float sample = cnoise(vec2(x, noiseY) * temperature);
-    sample *= noiseScale;
-
+    float sample = cnoise(vec2(x, noiseY) * temperature) * noiseScale;
     float distanceToLine = abs(p.y - sample);
-    float alpha = smoothstep(lineThickness, lineThickness * 0.5, distanceToLine);
-
-    return alpha;
-}
-
-vec2 lineDelta(float i) {
-    float deltaX = 0.06 * i;
-    float deltaY = 0.05 * i;
-    return vec2(deltaX, deltaY);
+    return 0.005 / distanceToLine;
 }
 
 vec3 palette(float t) {
@@ -77,14 +65,12 @@ vec3 palette(float t) {
     vec3 b = vec3(0.5, 0.5, 0.5);
     vec3 c = vec3(1.0, 1.0, 1.0);
     vec3 d = vec3(0.263, 0.416, 0.557);
-
     return a + b * cos(6.28318 * (c * t + d));
 }
 
 void main() {
     vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution) / u_resolution.y;
-
-    uv *= 2.0;
+    uv *= 1.0;
 
     float sampleY = 0.0;
     sampleY += u_time * speed;
@@ -93,7 +79,7 @@ void main() {
     float deltaY = 0.003;
 
     for(float i = -10.0; i <= 10.0; i += 1.0) {
-        vec2 p = uv + lineDelta(i);
+        vec2 p = uv + vec2(0.06 * i, 0.05 * i);
 
         sampleY += i * deltaY;
 
@@ -104,10 +90,6 @@ void main() {
         float line = perline(p, sampleY, lineThickness, noiseScale);
         float opacity = exp(-abs(i * 0.2));
         vec3 col = palette(i * .04 + 0.3) * 2.0 * line * opacity;
-
-        if(i > 14.0) {
-            col = vec3(1.0) * line * 0.3;
-        }
 
         finalColor = max(finalColor, col);
     }

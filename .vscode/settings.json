@@ -7,5 +7,8 @@
   },
   "[vert]": {
     "editor.defaultFormatter": "raczzalan.webgl-glsl-editor"
+  },
+  "glsl-canvas.textures": {
+    // "0": "assets/perlin_noise.png"
   }
 }

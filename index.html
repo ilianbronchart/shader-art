@@ -10,9 +10,30 @@
 
     <script src="libraries/p5.min.js"></script>
     <script src="libraries/p5.sound.min.js"></script>
+    <script src="libraries/utils.js"></script>
+    <script src="libraries/midi.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+    <script src="sketches/005/005.sketch.js"></script>
   </head>
 
   <body>
-    <script src="sketches/001_test/001_test.sketch.js"></script>
+    <div class="infoWrapper">
+      <div id="info1" class="info">INFO 1: None</div>
+      <div id="info2" class="info">INFO 2: None</div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const infoElements = document.querySelectorAll(".info");
+
+        infoElements.forEach((element) => {
+          element.addEventListener("click", () => {
+            navigator.clipboard.writeText(element.innerText).catch((err) => {
+              console.error("Error in copying text: ", err);
+            });
+          });
+        });
+      });
+    </script>
   </body>
 </html>

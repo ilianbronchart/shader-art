@@ -38,6 +38,9 @@ void main() {
     float aspectRatio = resolution.x / resolution.y;
     vec2 uv = (vTexCoord - 0.5) * vec2(aspectRatio, 1.0);  // Adjust for aspect ratio
 
+    // Apply transformations
+    uv.y += min(abs(0.01 / uv.x), 0.3);
+
     float p = 10000.0;
 
     for(int i = 0; i < MAX_PARABOLAS; i++) {

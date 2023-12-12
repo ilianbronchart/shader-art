@@ -1,4 +1,4 @@
-let buffer; 
+let buffer;
 let theShader;
 let prev, next, circleMask, maskedInterim, interim;
 let song;
@@ -6,7 +6,7 @@ let prevMousePos = [0, 0];
 let deltaMousePos = [0, 0];
 let mouseFactor = 1.0;
 let smoothingFactor = 0.95;
-let circleRadius = 100 ;
+let circleRadius = 100;
 let savedTime;
 let fps = 60;
 
@@ -15,10 +15,7 @@ let chunks = [];
 let recording = false;
 
 function preload() {
-  theShader = loadShader(
-    "sketches/003/vertex.vert",
-    "sketches/003/fragment.frag"
-  );
+  theShader = loadShader("sketches/003/vertex.vert", "sketches/003/fragment.frag");
   song = loadSound("assets/juno_reactor_solaris.mp3");
 }
 
@@ -39,7 +36,7 @@ function setup() {
 
 function setupVideo() {
   // Setup for video recording
-  let stream = canvas.captureStream(30); // Adjust the frame rate as needed
+  let stream = canvas.captureStream(fps); // Adjust the frame rate as needed
   let options = {
     mimeType: "video/webm; codecs=vp9",
     videoBitsPerSecond: 10000000, // Adjust this value for bitrate
@@ -94,21 +91,21 @@ function drawInterim() {
 }
 
 function drawNext() {
-    next.clear();
-    next.background(0);
-    next.push();
-    next.scale((circleRadius * 2) / width);
-    next.rotate(0.2 + frameCount * 0.05);
-    next.image(interim, 0, 0);
-    next.pop();
+  next.clear();
+  next.background(0);
+  next.push();
+  next.scale((circleRadius * 2) / width);
+  next.rotate(0.2 + frameCount * 0.05);
+  next.image(interim, 0, 0);
+  next.pop();
 
-    maskedInterim.clear();
-    maskedInterim.image(interim, 0, 0);
-    maskedInterim.erase();
-    maskedInterim.circle(width / 2, height / 2, circleRadius * 2);
-    maskedInterim.noErase();
+  maskedInterim.clear();
+  maskedInterim.image(interim, 0, 0);
+  maskedInterim.erase();
+  maskedInterim.circle(width / 2, height / 2, circleRadius * 2);
+  maskedInterim.noErase();
 
-    next.image(maskedInterim, 0, 0); 
+  next.image(maskedInterim, 0, 0);
 }
 
 function draw() {

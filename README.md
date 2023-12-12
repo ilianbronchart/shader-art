@@ -5,6 +5,8 @@ Feel free to install and try stuff out for yourself!
 
 ## Learning Resources:
 
+- [palette generator](http://dev.thi.ng/gradients/)
+
 ### Terms:
 
 - [Signed Distance Functions](https://iquilezles.org/articles/distfunctions2d/)

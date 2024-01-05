@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+<title>Spectrogram</title>
+<style>
+	* {
+    margin: 0;
+    padding: 0;
+} 
+</style>
+</head>
+<body>
+    <form>
+        <p><audio id="music" controls="true" autoload loop></audio></p>
+    </form>
+    <canvas id="canvasanalyser" width="0" height="0"> </canvas>
+</body>
+
+<style>
+    form {
+	position: absolute;
+	z-index: +1;
+    }
+
+    #canvasanalyser {
+        background-color: black;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        padding: 0px;
+        margin: 0px;
+    }
+</style>
+
+<script>
+
+'use strict'
+
+const WIDTH = 1000;
+const HEIGHT = 400;
+// init canvas
+var canvas = document.getElementById('canvasanalyser');
+canvas.width = WIDTH;
+canvas.height = HEIGHT;
+var canvasCtx = canvas.getContext('2d');
+
+// create a temp canvas we use for copying the real canvas into.
+var tempCanvas = document.createElement("canvas"),
+tempCtx = tempCanvas.getContext("2d");
+tempCanvas.width = WIDTH;
+tempCanvas.height = HEIGHT;
+
+// init animationFrameRequest
+var animationReq;
+
+// Init Audio
+var audio = document.getElementById('music');
+
+audio.addEventListener('play', function() {
+	draw();
+});
+audio.addEventListener('ended', function() {
+	window.cancelAnimationFrame(animationReq);
+});
+audio.addEventListener('pause', function() {
+	window.cancelAnimationFrame(animationReq);
+});
+
+function playAudio() {
+    window.cancelAnimationFrame(animationReq);  // Assuming 'animationReq' is a requestAnimationFrame ID
+
+    audio.src = '../../assets/juno_reactor_solaris.mp3';
+
+    audio.load();
+    audio.play();
+
+    draw();
+}
+
+playAudio();
+
+// Create audio context
+var audioCtx = new AudioContext();
+document.body.addEventListener('click', function() {
+	// Chrome blocks Audiocontexts that are created before first user interaction.
+	audioCtx.resume();
+});
+
+var audioSrc = audioCtx.createMediaElementSource(audio);
+var analyser = audioCtx.createAnalyser();
+analyser.smoothingTimeConstant = 0;
+audioSrc.connect(analyser);
+analyser.connect(audioCtx.destination);
+analyser.fftSize = Math.pow(2, Math.ceil(Math.log(canvas.height)/Math.log(2))); // 32-32768
+analyser.fftSize = 32768;
+const bufferLength = analyser.frequencyBinCount;
+const frequencyData = new Uint8Array(bufferLength);
+
+var start = new Date();
+
+function draw() {
+	if (audio.paused) { return; }
+
+	animationReq = requestAnimationFrame(draw);
+	analyser.getByteFrequencyData(frequencyData);
+
+	var barHeight = canvas.height/analyser.fftSize *2;
+
+
+	// throttle at 50 Hz drawing (20 ms for less CPU usage, and a more smooth drawing)
+	var now = new Date();
+	if (now < new Date(start.getTime() + 20)) { return; }
+	start = now;
+
+	// copy the current canvas onto the temp canvas
+	tempCtx.drawImage(canvas, 0, 0, WIDTH, HEIGHT);
+
+	// iterate over the elements from the array
+	for (var i = 0; i < frequencyData.length; i++) {
+		var value = frequencyData[i];
+		canvasCtx.fillStyle = 'rgb('+((value > 190) ? 255 : value)+', '+ ((value > 220) ? 255 : value-100) +', 0)';
+		canvasCtx.fillRect(WIDTH - 1, HEIGHT - i*barHeight, 1, barHeight);
+	}
+	// set translate on the canvas
+	canvasCtx.translate(-1, 0);
+	// draw the copied image
+	canvasCtx.drawImage(tempCanvas, 0, 0, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT);
+	// reset the transformation matrix
+	canvasCtx.setTransform(1, 0, 0, 1, 0, 0);
+}
+</script>
+</html>

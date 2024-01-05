@@ -25,12 +25,6 @@ export class Note {
     } else {
       this.value = lerp(this.value, this.targetValue, lerpFactor);
     }
-
-    if (this.prevValue !== this.value) {
-      const midiInfoElement = document.getElementById("info1");
-      if (!midiInfoElement) return;
-      midiInfoElement.textContent = `MIDI Note: ${this.note}, Value: ${this.getValue().toFixed(2)}`;
-    }
   }
 
   getBinary() {
@@ -123,6 +117,14 @@ export class Midi {
   stopRecording(download = true) {
     console.log("Stopping recording.");
 
+    // Add the rest of the notes to the recording.
+    if (this.editRecording) {
+      while (this.editIndex < this.loadedMessages.length) {
+        this.recordedMessages.push(this.loadedMessages[this.editIndex]);
+        this.editIndex++;
+      }
+    }
+
     if (download) {
       const blob = new Blob([JSON.stringify(this.recordedMessages)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
@@ -176,6 +178,10 @@ export class Midi {
       const getMIDIMessage = (midiMessage) => {
         let noteNumber = midiMessage.data[1];
         let velocity = midiMessage.data.length > 2 ? midiMessage.data[2] : 0;
+
+        const midiInfoElement = document.getElementById("info1");
+        if (!midiInfoElement) return;
+        midiInfoElement.textContent = `MIDI Note: ${noteNumber}, Value: ${velocity}`;
 
         if (this.notes[noteNumber]) {
           this.notes[noteNumber].setTargetValue(this.p.map(velocity, 0, 127, 0, 1));

@@ -2,8 +2,8 @@ import { Midi, Note } from "../../custom/midi.js";
 
 const s = (p) => {
   let theShader;
-  let width = 1920;
-  let height = 1080;
+  let width = 1440;
+  let height = 810;
 
   let next, prev, offscreen;
   let song;
@@ -71,13 +71,13 @@ const s = (p) => {
       videoBitsPerSecond: 10000000, // Adjust this value for bitrate
     };
 
-    mediaRecorder = new MediaRecorder(stream, options);
+    // mediaRecorder = new MediaRecorder(stream, options);
 
-    mediaRecorder.ondataavailable = (event) => {
-      if (event.data.size > 0) chunks.push(event.data);
-    };
+    // mediaRecorder.ondataavailable = (event) => {
+    //   if (event.data.size > 0) chunks.push(event.data);
+    // };
 
-    mediaRecorder.onstop = exportVideo;
+    // mediaRecorder.onstop = exportVideo;
   }
 
   function exportVideo() {

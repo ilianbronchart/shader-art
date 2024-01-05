@@ -178,7 +178,7 @@ vec4 fadeAway() {
     }
 
     vec3 lineColor = palette((vTexCoord.x + vTexCoord.y) * 0.2);
-    return vec4(lineColor, (transparency * l) * (1.0 - lineCount / float(MAX_LINES)) + 1.0 * lineCount / float(MAX_LINES));
+    return vec4(lineColor, (transparency * l) * (1.0 - lineCount  / float(MAX_LINES)) + 1.0 * lineCount / float(MAX_LINES));
 }
 
 void main() {

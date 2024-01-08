@@ -1,7 +1,7 @@
 import { lerp } from "./utils.js";
 
 export class Note {
-  constructor(note, { lerpDisabled = false, isSymmetric = false, isBinary = false } = {}) {
+  constructor(note, { lerpDisabled = false, isSymmetric = false, isBinary = false, lerpFactor = 0.5 } = {}) {
     this.note = note;
     this.targetValue = 0;
     this.lerpDisabled = lerpDisabled;
@@ -9,6 +9,7 @@ export class Note {
     this.isBinary = isBinary;
     this.value = 0;
     this.prevValue = 0;
+    this.lerpFactor = lerpFactor;
 
     if (this.isSymmetric) {
       this.value = 0.5;
@@ -17,13 +18,13 @@ export class Note {
     }
   }
 
-  updateValue(lerpFactor = 0.5) {
+  updateValue() {
     this.prevValue = this.value;
 
     if (this.lerpDisabled) {
       this.value = this.targetValue;
     } else {
-      this.value = lerp(this.value, this.targetValue, lerpFactor);
+      this.value = lerp(this.value, this.targetValue, this.lerpFactor);
     }
   }
 
